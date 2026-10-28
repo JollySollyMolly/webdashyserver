@@ -172,11 +172,12 @@ function serveFile(res, file) {
     fs.createReadStream(file).pipe(res);
   });
 }
-function startServer(port) {
+function startServer(port, host) {
+  host = host || process.env.HOST || '0.0.0.0';
   http.createServer(async (req, res) => {
     const u = url.parse(req.url, true), p = decodeURIComponent(u.pathname);
     try {
-      if (p === '/api/ping') return sendJSON(res, 200, { ok: true });
+      if (p === '/api/ping' || p === '/healthz') return sendJSON(res, 200, { ok: true });
       if (p === '/api/search') return sendJSON(res, 200, await searchLevels(u.query));
       let m;
       if ((m = /^\/api\/level\/(-?\d+)$/.exec(p))) return sendJSON(res, 200, await downloadLevel(+m[1]));
@@ -188,7 +189,7 @@ function startServer(port) {
       if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
       serveFile(res, file);
     } catch (e) { console.warn(p, e.message); sendJSON(res, 502, { error: e.message }); }
-  }).listen(port, '127.0.0.1', () => console.log(`WebDash running at http://localhost:${port}/  (Ctrl+C to stop)`));
+  }).listen(port, host, () => console.log(`WebDash listening on ${host}:${port}`));
 }
 
 /* ------------------------------------------------------------------ CLI --------------------- */
@@ -196,7 +197,7 @@ async function main() {
   const [cmd, ...rest] = process.argv.slice(2);
   const flags = {}; const args = [];
   for (let i = 0; i < rest.length; i++) { if (rest[i].startsWith('--')) { const k = rest[i].slice(2); flags[k] = (rest[i + 1] && !rest[i + 1].startsWith('--')) ? rest[++i] : 1; } else args.push(rest[i]); }
-  if (!cmd || cmd === 'serve') return startServer(+(flags.port || 8080));
+  if (!cmd || cmd === 'serve') return startServer(+(flags.port || process.env.PORT || 8080), flags.host || process.env.HOST || '0.0.0.0');
   if (cmd === 'search') {
     const r = await searchLevels(Object.assign({ str: args.join(' ') }, flags));
     console.log(`${r.total} results (showing ${r.offset}-${r.offset + r.levels.length})`);
