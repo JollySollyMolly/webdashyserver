@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>WebDash</title>
+<style>
+  html,body{margin:0;height:100%;background:#000;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+  canvas{display:block;position:fixed;inset:0}
+  #overlay{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
+    background:rgba(0,0,0,.45);color:#fff;font-family:system-ui,sans-serif;text-align:center;cursor:pointer}
+  #otitle{font-size:clamp(36px,8vw,84px);font-weight:800;letter-spacing:.04em;text-shadow:0 4px 0 #0008}
+  #osub{margin-top:14px;font-size:clamp(14px,2.4vw,22px);opacity:.9}
+  #menu{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:max(16px,6vh);background:#0a2a66;color:#fff;font-family:system-ui,sans-serif;overflow:auto;padding:16px;box-sizing:border-box}
+  #menu h1{font-size:clamp(32px,6vw,64px);margin:0 0 16px}
+  #menu .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;max-width:900px;width:100%}
+  #menu button{font:600 15px system-ui;padding:10px;border:0;border-radius:6px;background:#2f7bff;color:#fff;cursor:pointer}
+  #menu button:hover{background:#5a98ff}
+  #menu p{opacity:.75;font-size:13px;text-align:center}
+  #menu h2{margin:22px 0 8px;font-size:22px}
+  #menu .row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0;align-items:center}
+  #menu input,#menu select{font:15px system-ui;padding:9px;border-radius:6px;border:0;min-width:0}
+  #menu input{flex:1 1 220px;max-width:360px}
+  #menu small{opacity:.8;font-weight:400}
+  #online{width:100%;max-width:900px;display:flex;flex-direction:column;align-items:center}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="menu"></div>
+<div id="overlay"><div id="otitle"></div><div id="osub"></div></div>
+<script src="data.js"></script>
+<script src="objdb.js"></script>
+<script src="levels.js"></script>
+<script src="gdlevel.js"></script>
+<script src="data/objtypes.js"></script>
+<script src="gdobjects.js"></script>
+<script src="icons.js"></script>
+<script src="engine.js"></script>
+<script src="render-registry.js"></script>
+<!-- MODES:BEGIN -->
+<script src="modes/ball.js"></script>
+<script src="modes/orbs.js"></script>
+<script src="modes/robot.js"></script>
+<script src="modes/spider.js"></script>
+<script src="modes/swing.js"></script>
+<script src="modes/ufo.js"></script>
+<script src="modes/wave.js"></script>
+<!-- MODES:END -->
+<script src="game.js"></script>
+</body>
+</html>
